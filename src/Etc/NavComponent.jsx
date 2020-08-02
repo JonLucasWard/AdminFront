@@ -10,13 +10,11 @@ const NavComponent = () => {
     return (
             <AppBar style={{position: "sticky"}}>
                 <Container>
-                <p>DGenerator.com For all your random needs</p>
+                <p>DGenerator.com For all your random ADMIN needs</p>
                     <ButtonGroup>
-                        <Button tag={Link} to="/Quick_Tools">Quick Tools</Button>
-                        <Button tag={Link} to="/UserData">Tables and Upload</Button>
-                        <Button tag={Link} to="/Encounters">Encounters</Button>
-                        <Button tag={Link} to="/About">About</Button>
-                        <Button tag={Link} to="/Setting">Setting</Button>
+                        <Button tag={Link} to="/UserData">Public Tables</Button>
+                        <Button tag={Link} to="/AdminData">Admin Tables</Button>
+                        <Button tag={Link} to="/Blog">Blog</Button>
                     </ButtonGroup>
                 </Container>
             </AppBar>

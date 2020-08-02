@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Upload extends React.Component {
+export class Blog extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -11,7 +11,7 @@ export class Upload extends React.Component {
     render(){
         return (
             <div>
-            <p>This is the upload page</p>
+            <p>This is the blog page</p>
             </div>
         )
     }

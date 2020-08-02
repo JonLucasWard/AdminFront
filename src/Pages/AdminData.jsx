@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export class Ad extends React.Component {
+export class AdminData extends React.Component {
     constructor(props){
         super(props);
         this.state = {
@@ -10,8 +10,8 @@ export class Ad extends React.Component {
     
     render(){
         return (
-            <div className="AdGutter">
-            <p>I'm an ad gutter</p>
+            <div>
+            <p>This is the AdminData page</p>
             </div>
         )
     }
