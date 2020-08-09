@@ -1,5 +1,5 @@
 {
-  "name": "dgen-frontend",
+  "name": "dgen-adminend",
   "version": "1.0.0",
   "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
   "main": "index.js",
@@ -50,5 +50,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JonLucasWard/AdminFront.git"
+  },
+  "bugs": {
+    "url": "https://github.com/JonLucasWard/AdminFront/issues"
+  },
+  "homepage": "https://github.com/JonLucasWard/AdminFront#readme"
 }

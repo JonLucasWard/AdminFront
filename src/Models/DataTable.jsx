@@ -1,11 +1,13 @@
 import * as React from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
+import {Button} from 'reactstrap';
 
 export class DataTable extends React.Component {
     constructor(props){ //inherit properties of parent, ideally this should be the Setting component
         super(props); //apply the properties of the parent component
         this.data = props.data; //assign a unique prop value, inherited from parent
         this.tableName = props.tableName; //likewise, a number property, props must be forced to be treated as a number to count correctly according to humans
+        this.makeEdit = props.makeEdit;
     }
 
     startColumns(){ //list names of the columns
@@ -21,6 +23,7 @@ export class DataTable extends React.Component {
         let holdMe = Object.keys(this.props.data).map(key => 
                 <TableRow>
                     {this.startDataCells(key)}
+                    <Button value={key} onClick={() => this.props.makeEdit(key)}>Edit</Button>
                 </TableRow>
         );
 
