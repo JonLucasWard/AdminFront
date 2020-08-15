@@ -7,13 +7,11 @@ import NavComponent from './Etc/NavComponent';
 import { Blog } from './Pages/Blog';
 import {UserData} from './Pages/UserData';
 import { AdminData } from './Pages/AdminData';
-import{Ad} from './Pages/Ad';
 
 
 function App() {
   return (
     <HashRouter>
-      <Ad/>
       <div className="App">
         <NavComponent />
       <Switch>
@@ -22,7 +20,6 @@ function App() {
         <Route path="/Blog" component={Blog} />
         </Switch>
     </div>
-    <Ad/>
     </HashRouter>
   );
 }

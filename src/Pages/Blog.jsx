@@ -11,7 +11,7 @@ export class Blog extends React.Component {
     render(){
         return (
             <div>
-            <p>This is the blog page</p>
+            <p>This should redirect to a wordpress blog or similar, why make what someone else already did? And they're charging the low price of free!</p>
             </div>
         )
     }

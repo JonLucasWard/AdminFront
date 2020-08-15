@@ -11,6 +11,7 @@ export class UserData extends React.Component {
         super(props);
         this.state = {
             data: [],
+            isNewUpload: true,
             editMe: [],
             table: {
                 tableName: "age",
@@ -23,6 +24,7 @@ export class UserData extends React.Component {
         this.getTable = this.getTable.bind(this);
         this.makeEdit = this.makeEdit.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
+        this.makeNew = this.makeNew.bind(this);
     }
 
     handleEdit(e){
@@ -34,13 +36,26 @@ export class UserData extends React.Component {
             }
         }
         let objecto = {...this.state.editMe, [key]: value};
+        if(this.state.isNewUpload === true && key === "id"){ //allow id to be blank
+            objecto = {...this.state.editMe, "id": null}
+        }
         this.setState({editMe: objecto});
+        console.log(this.state.editMe);
         return;
     }
 
     makeEdit(e){
         let objecto = this.state.data[e];
         this.setState({editMe: objecto});
+        this.setState({isNewUpload:false})
+        return;
+    }
+
+    makeNew(e){
+        let objecto = this.state.data[0];
+        this.setState({editMe: objecto});
+
+        this.setState({isNewUpload:true});
         return;
     }
 
@@ -69,6 +84,7 @@ export class UserData extends React.Component {
         axios.get(UD+"getTable/"+this.state.table.tableName+"/"+this.state.table.min+"/"+this.state.table.max).then(response=>{
             let dataGet = response.data;
             this.setState({'data': dataGet});
+            this.makeNew(e);
         }).catch(error => {
             errorLogger(error);
         });
@@ -87,7 +103,7 @@ export class UserData extends React.Component {
                 break;
             case 'editMe':
                 if(this.state.editMe.length !== 0){
-                    let holdme = <div><UpdateSection data={this.state.editMe} handleEdit={this.handleEdit}/><Button value={this.state.editMe} onClick={() => this.uploadRow()}>Upload</Button></div>
+                    let holdme = <div><UpdateSection data={this.state.editMe} handleEdit={this.handleEdit} new={this.state.isNewUpload}/><Button value={this.state.editMe} onClick={() => this.uploadRow()}>Upload</Button></div>
                     return holdme;
                 } else{
                 }
