@@ -52,9 +52,15 @@ export class UserData extends React.Component {
     }
 
     makeNew(e){
-        let objecto = this.state.data[0];
+        let objecto = {...this.state.data[0]};
+        console.log(objecto);
+        Object.keys(objecto).map(key =>
+            objecto[key] = null
+            );
+        //set everything to null
         this.setState({editMe: objecto});
-
+        console.log(objecto);
+        console.log(this.state.data[0]);
         this.setState({isNewUpload:true});
         return;
     }

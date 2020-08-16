@@ -5,7 +5,7 @@ import {Button} from 'reactstrap';
 import {AdminEditTable} from '../Models/AdminEditTable';
 import {UpdateAdmin} from '../Models/UpdateAdmin';
 
-const AD = '/AdminData/';
+const AD = '/AdminTools/';
 
 export class AdminData extends React.Component {
 
@@ -19,10 +19,10 @@ export class AdminData extends React.Component {
         table: {
         tableName: "age",
         adminTable: "admindb",
-        min: 1,
-        max: 20,
-        adminMin: 1,
-        adminMax: 20
+        min: 0,
+        max: 19,
+        adminMin: 0,
+        adminMax: 19
             }
         }
         this.handleTable = this.handleTable.bind(this);
@@ -31,6 +31,7 @@ export class AdminData extends React.Component {
         this.handleEdit = this.handleEdit.bind(this);
         this.approve = this.approve.bind(this);
         this.deny = this.deny.bind(this);
+        this.getAdminTable = this.getAdminTable.bind(this);
         }
     
     handleEdit(e){
@@ -56,33 +57,55 @@ export class AdminData extends React.Component {
     }
     
     approve(e){
-        let objecto = this.state.data[e];
+        let objecto = {...this.state.data[e], };
+
         this.setState({submitMe: objecto});
 
+
+        setTimeout(() =>
         axios.post(AD+"addToMain/"+this.state.table.tableName, [this.state.submitMe]).then(response=>{
             this.setState({submitMe: []});
         }).catch(error =>{
             alert("Check the logs");
             errorLogger(error);
-        });
+        }), 525
+        );
 
-        this.getTable();
-        console.log("Finished approve, tables should have updated with appropriate data");
+
+        setTimeout(() =>
+        this.getTable(),
+        700);
+
+        setTimeout(() =>
+        this.getAdminTable(),
+        750);
     }
 
     deny(e){
         let objecto = this.state.data[e];
         this.setState({submitMe: objecto});
 
-        axios.post(AD+"denyInput/"+this.state.table.tableName, [this.state.submitMe]).then(response=>{
+        setTimeout(() =>
+            axios.post(AD+"denyInput/"+this.state.table.tableName, [this.state.submitMe]).then(response=>{
             this.setState({submitMe: []});
+            console.log(this.state.submitMe);
         }).catch(error =>{
             alert("Check the logs");
             errorLogger(error);
-        });
+        }), 500
+        );
+        
 
-        this.getTable();
-        console.log("Finished deny, tables should have updated with appropriate data");
+        setTimeout(() =>
+        this.getTable(),
+        700);
+
+        setTimeout(() =>
+        this.getAdminTable(),
+        750);
+
+        setTimeout(() =>
+        console.log("Finished deny, tables should have updated with appropriate data"), 800);
     }
 
     handleTable(e){
@@ -111,13 +134,10 @@ export class AdminData extends React.Component {
 
     uploadRow(e){
         axios.post(AD+"putData/"+this.state.table.tableName, [this.state.editMe]).then(response=>{
-            alert("Data sent to server.");
+            alert("Data sent to server. Please refresh your table.");
         }).catch(error =>{
             errorLogger(error);
         });
-
-        this.getTable();
-        console.log("Finished update, tables should have updated accordingly");
     }
 
 
@@ -142,8 +162,8 @@ export class AdminData extends React.Component {
     loadData(key){
         switch(key){
             case 'adminTable':
-            if(this.state.data.length !== 0){ //check for civlization, if there isn't one, don't do anything
-                    let holdme = <AdminTable tableName ={this.state.table.tableName} data={this.state.data}/> //we must pass in key (to suppress warnings), number (count of a given Civ object in an array), and the civ object itself
+            if(this.state.adminData.length !== 0){ //check for civlization, if there isn't one, don't do anything
+                    let holdme = <AdminTable tableName ={this.state.table.tableName} data={this.state.adminData}/> //we must pass in key (to suppress warnings), number (count of a given Civ object in an array), and the civ object itself
                     return holdme; //that list of Civilization components is added to the holdMe object, we now pass that object which is loaded with JSX, it will populate the page
                 } else {
                     let holdme = <p>No call was made yet. Or there was no data for that table/page.</p>
@@ -189,8 +209,8 @@ export class AdminData extends React.Component {
                 </datalist>
             <p>Min: </p><input name="min" type="number" min="0" onChange={this.handleTable} value={this.state.table.min}/>
             <p>Max:</p><input name="max" type="number" min="1" onChange={this.handleTable} value={this.state.table.max}/>
-            <Button onClick={this.getAdminTable}>Get Admin Data</Button>
-            {this.loadData("adminTable")}
+            <Button onClick={this.getTable}>Get Data</Button>
+            {this.loadData("table")}
             {this.loadData("editMe")}
 
             </div>

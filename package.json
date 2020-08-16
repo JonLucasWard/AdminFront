@@ -30,7 +30,7 @@
     "reactstrap": "^8.4.1",
     "redocx": "^1.1.4",
     "tether": "^1.4.7",
-    "typescript": "^3.7.5"
+    "typescript": "^3.9.7"
   },
   "devDependencies": {},
   "scripts": {
