@@ -1,5 +1,16 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+
+TO DO NOW:
+Test functions
+Add csv download and upload
+Comment for clarity
+
+TO DO LATER:
+Refactor code for simplicity and streamlining
+Implement security from inputs, includes rollback and committing to database
+Business features (ads, linking to work press, affiliate marketing)
+
 ## Available Scripts
 
 In the project directory, you can run:
