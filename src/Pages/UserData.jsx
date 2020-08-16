@@ -3,16 +3,27 @@ import {DataTable} from '../Models/DataTable';
 import {axios, errorLogger} from '../Etc/axiosU';
 import {Button} from 'reactstrap';
 import {UpdateSection} from '../Models/UpdateSection';
+import CSVReader from 'react-csv-reader';
+import CsvDownloader from 'react-csv-downloader';
 
 const UD = '/UserData/';
+const papaparseOptions = {
+    header: true,
+    dynamicTyping: true,
+    skipEmptyLines: true,
+    transformHeader: header => header.toLowerCase().replace(/\W/g, "_")
+  };
 
 export class UserData extends React.Component {
     constructor(props){
         super(props);
         this.state = {
             data: [],
+            fileName: "",
             isNewUpload: true,
             editMe: [],
+            massData: [],
+            massDown: [],
             table: {
                 tableName: "age",
                 pageNum: "1",
@@ -25,6 +36,9 @@ export class UserData extends React.Component {
         this.makeEdit = this.makeEdit.bind(this);
         this.handleEdit = this.handleEdit.bind(this);
         this.makeNew = this.makeNew.bind(this);
+        this.handleFileName = this.handleFileName.bind(this);
+        this.massUpload = this.massUpload.bind(this);
+        this.downloadTable = this.downloadTable.bind(this);
     }
 
     handleEdit(e){
@@ -53,14 +67,11 @@ export class UserData extends React.Component {
 
     makeNew(e){
         let objecto = {...this.state.data[0]};
-        console.log(objecto);
         Object.keys(objecto).map(key =>
             objecto[key] = null
             );
         //set everything to null
         this.setState({editMe: objecto});
-        console.log(objecto);
-        console.log(this.state.data[0]);
         this.setState({isNewUpload:true});
         return;
     }
@@ -85,12 +96,36 @@ export class UserData extends React.Component {
         });
     }
 
+    handleFileName(e){
+        let x = e.target.value;
+        console.log(x);
+        this.setState({fileName: x});
+    }
+
+    massUpload(data, fileInfo){
+        console.log(fileInfo);
+        axios.post(UD+"massData/"+this.state.table.tableName, data).then(response=>{
+            alert("Data sent to server.");
+        }).catch(error =>{
+            errorLogger(error);
+        });
+    }
 
     getTable(e){
         axios.get(UD+"getTable/"+this.state.table.tableName+"/"+this.state.table.min+"/"+this.state.table.max).then(response=>{
             let dataGet = response.data;
             this.setState({'data': dataGet});
             this.makeNew(e);
+        }).catch(error => {
+            errorLogger(error);
+        });
+    }
+
+    downloadTable(){
+        axios.get(UD+"wholeTable/"+this.state.table.tableName).then(response=>{
+            let dataGet = response.data;
+            this.setState({'massDown': dataGet});
+            alert('Data has been downloaded');
         }).catch(error => {
             errorLogger(error);
         });
@@ -114,6 +149,25 @@ export class UserData extends React.Component {
                 } else{
                 }
                 break;
+            case 'MassUpload':
+                if(this.state.data.length !== 0){
+                    //https://codesandbox.io/s/react-csv-reader-vtull?file=/src/index.js:197-359
+                    let holdme = <CSVReader parserOptions={papaparseOptions} onFileLoaded={(data, fileInfo) => this.massUpload(data, fileInfo)}/>
+                    //let holdme = <div><input id="file-input" type="file" name="name" onChange={this.handleFileName} value={this.state.fileName} /><Button onClick={() => this.massUpload()}>Submit to Server</Button></div>
+                    return holdme;
+                } else{}
+                break;
+            case 'DownloadTable':
+                if(this.state.data.length !== 0){
+                    let holdme = <Button onClick={() => this.downloadTable()}>Download Data</Button>
+                    return holdme;
+                }
+                break;
+            case 'DownloadFile':
+                if(this.state.massDown.length !== 0){
+                    let holdme = <CsvDownloader filename={this.state.table.tableName+"Download"} text="Download File" datas={this.state.massDown}/>
+                    return holdme;
+                }
             default:
                 break;
         }
@@ -122,6 +176,7 @@ export class UserData extends React.Component {
     render(){
         return (
             <div>
+            {this.loadData("MassUpload")}
             <p>Select a Table:</p>
             <input type="text" list="tableName" name="tableName" onChange={this.handleTable}/>
                 <datalist id="tableName" value={this.state.table.tableName}>
@@ -133,6 +188,8 @@ export class UserData extends React.Component {
             <Button onClick={this.getTable}>Get Data</Button>
             {this.loadData("table")}
             {this.loadData("editMe")}
+            {this.loadData("DownloadTable")}
+            {this.loadData("DownloadFile")}
 
             </div>
         )
