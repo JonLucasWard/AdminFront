@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 
+//this table is just meant to display the adminDB table, which is not intended to be edited in any way
+
 export class AdminTable extends React.Component {
     constructor(props){ //inherit properties of parent, ideally this should be the Setting component
         super(props); //apply the properties of the parent component

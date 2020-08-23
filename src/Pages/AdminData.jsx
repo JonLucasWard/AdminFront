@@ -19,9 +19,9 @@ export class AdminData extends React.Component {
         table: {
         tableName: "age",
         adminTable: "admindb",
-        min: 0,
+        min: 0, //numbers are slightly different from user, we count from array using FETCH, rather than counting IDs, the ids in these tables are unreliable
         max: 19,
-        adminMin: 0,
+        adminMin: 0, //we have values for the adminDB table, as well as whatever table in the admin database that we are looking at
         adminMax: 19
             }
         }
@@ -62,17 +62,17 @@ export class AdminData extends React.Component {
         this.setState({submitMe: objecto});
 
 
-        setTimeout(() =>
+        setTimeout(() => //timeouts are necessary due to the asynchronous nature of setstate and the axios calls
         axios.post(AD+"addToMain/"+this.state.table.tableName, [this.state.submitMe]).then(response=>{
-            this.setState({submitMe: []});
+            this.setState({submitMe: []}); //once this call is accepted by the DB, we will reset the state of submission to null
         }).catch(error =>{
             alert("Check the logs");
             errorLogger(error);
-        }), 525
+        }), 525 //we wait 525 milliseconds
         );
 
-
-        setTimeout(() =>
+        //the next 2 timeouts are to refresh the tables to show correct data
+        setTimeout(() => 
         this.getTable(),
         700);
 
@@ -81,7 +81,7 @@ export class AdminData extends React.Component {
         750);
     }
 
-    deny(e){
+    deny(e){ //as per approve, but calls the deny function in the backend instead
         let objecto = this.state.data[e];
         this.setState({submitMe: objecto});
 

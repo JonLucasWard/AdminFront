@@ -2,6 +2,8 @@ import * as React from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import {Button} from 'reactstrap';
 
+//for when we want to update a value in the admin table for whatever reason
+
 export class UpdateAdmin extends React.Component {
     constructor(props){ //inherit properties of parent, ideally this should be the Setting component
         super(props); //apply the properties of the parent component

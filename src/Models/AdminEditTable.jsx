@@ -2,6 +2,7 @@ import * as React from 'react';
 import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from '@material-ui/core';
 import {Button} from 'reactstrap';
 
+//This table differs from the user table i nthat it has more buttons to be used
 export class AdminEditTable extends React.Component {
     constructor(props){ //inherit properties of parent, ideally this should be the Setting component
         super(props); //apply the properties of the parent component
